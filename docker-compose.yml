@@ -11,11 +11,14 @@ services:
         - APP_NAME=${APP_NAME}
         - SPRING_PROFILES=${SPRING_PROFILES}
     container_name: "java"
-    image: "Your Image"
+    image: "smartopsdemo"
+    ports:
+      - "${APP_PORT:-8443}:8080"
 
     volumes_from:
       - container:pinpoint-agent
-
+    environment:
+     JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=smartopsdemo -Dpinpoint.profiler.profiles.active=MyProfile  -Dpinpoint.config=$MY_EXTERNAL_CONFIG_PATH"
 networks:
   default:
     external:
